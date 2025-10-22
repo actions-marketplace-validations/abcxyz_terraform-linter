@@ -44,6 +44,7 @@ const (
 	tokenTypeLocals   = "locals"
 	tokenTypeImport   = "import"
 	tokenTypeMoved    = "moved"
+	tokenTypeData     = "data"
 )
 
 // List of valid extensions that can be linted.
@@ -295,7 +296,8 @@ func (l *Linter) findViolations(content []byte, path string) error {
 				contents == tokenTypeVariable ||
 				contents == tokenTypeLocals ||
 				contents == tokenTypeImport ||
-				contents == tokenTypeMoved) {
+				contents == tokenTypeMoved ||
+				contents == tokenTypeData) {
 			inBlock = true
 			start = idx
 			depth = 0

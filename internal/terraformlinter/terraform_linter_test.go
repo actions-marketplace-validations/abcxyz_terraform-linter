@@ -600,6 +600,20 @@ module "mymodule" {
 }
 			`,
 		},
+		// https://github.com/abcxyz/terraform-linter/issues/30
+		{
+			name: "bug_repro_hyphen_in_string_value - no support for data blocks",
+			content: `
+		data "google_project" "gad" {
+		  project_id = module.imports.data.action_dispatcher.components.webhook.stage.project_id
+		}
+
+		module "common" {
+		  domains = ["action-dispatcher-stage.ghss.joonix.net"]
+		}
+		        `,
+			expect: ``,
+		},
 	}
 
 	for _, tc := range cases {
@@ -623,7 +637,7 @@ module "mymodule" {
 			}
 
 			if got, want := strings.TrimSpace(buf.String()), strings.TrimSpace(tc.expect); got != want {
-				t.Errorf("expected\n\n%s\n\nto be\n\n%s", got, want)
+				t.Errorf("expected: \n\n%s\n\ngot:\n\n%s", want, got)
 			}
 		})
 	}
